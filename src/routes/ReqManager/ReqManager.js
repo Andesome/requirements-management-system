@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
 import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import {PAGE_SIZE} from "../../constant/config";
 
 import styles from './req-manager.less';
 
@@ -18,13 +17,40 @@ const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 }))
 @Form.create()
 class ReqManager extends PureComponent {
-  state = {
-    addInputValue: '',
-    modalVisible: false,
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-  };
+  constructor(props){
+    super(props);
+    this.examineDemand  = this.examineDemand.bind(this);
+    this.paginationFunc = this.paginationFunc.bind(this);
+    this.state = {
+      addInputValue: '',
+      modalVisible: false,
+      expandForm: false,
+      selectedRows: [],
+      formValues: {},
+    };
+  }
+
+
+  //审核需求：1,审核通过，2，审核不通
+  examineDemand(reqId,status){  //传入需求ID,以及要改变的状态
+    console.log("审核需求",reqId,status);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'demand/setDemandStatus',
+      reqId:reqId,
+      status:status
+    })
+  }
+
+  //分页函数
+  paginationFunc(offset,limit){
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'demand/fetch',
+      offset:offset,
+      limit:limit
+    });
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -282,7 +308,7 @@ class ReqManager extends PureComponent {
   }
 
   render() {
-    // console.log("需求管理页面props：",this.props);
+    console.log("需求管理页面props：",this.props);
     const { demands: { loading: ruleLoading, list:data,total } } = this.props;
     const { selectedRows, modalVisible, addInputValue } = this.state;
   // console.log("rule:--",ruleLoading,data);
@@ -325,6 +351,8 @@ class ReqManager extends PureComponent {
               onChange={this.handleStandardTableChange}
               totalSize={total}
               dispatch={this.props.dispatch}
+              examine={this.examineDemand}
+              pagingFun={this.paginationFunc}
             />
           </div>
         </Card>

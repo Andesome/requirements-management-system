@@ -4,41 +4,10 @@ const menuData = [{
 },{
   name:'方案管理',
   path:'solutions_manager',
-}, {
-  name: '异常页',
-  icon: 'warning',
-  path: 'exception',
-  children: [{
-    name: '403',
-    path: '403',
-  }, {
-    name: '404',
-    path: '404',
-  }, {
-    name: '500',
-    path: '500',
-  }, {
-    name: '触发异常',
-    path: 'trigger',
-  }],
-}, {
-  name: '账户',
-  icon: 'user',
-  path: 'user',
-  children: [{
-    name: '登录',
-    path: 'login',
-  }, {
-    name: '注册',
-    path: 'register',
-  }, {
-    name: '注册结果',
-    path: 'register-result',
-  }],
 },{
   name: '使用文档',
   icon: 'book',
-  path: 'http://pro.ant.design/docs/getting-started',
+  path: 'http://blog.liaolunling.top',
   target: '_blank',
 }];
 

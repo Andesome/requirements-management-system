@@ -38,16 +38,11 @@ class StandardTable extends PureComponent {
     }
 
     this.setState({selectedRowKeys, totalCallNo});
-  }
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
-    // console.log("处理tab变化：",pagination,filters,sorter,PAGE_SIZE);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'demand/fetch',
-      offset:pagination.current*PAGE_SIZE,
-      limit:PAGE_SIZE
-    });
+    console.log("处理tab变化：",pagination,filters,sorter,PAGE_SIZE);
+    this.props.pagingFun((pagination.current-1)*PAGE_SIZE,PAGE_SIZE);
     this.setState({
       filteredInfo: filters,
       sortedInfo: sorter,
@@ -160,11 +155,11 @@ class StandardTable extends PureComponent {
       },
       {
         title: '审核',
-        render: () => (
+        render: (val,record) => (
           <div>
-            <a href="">通过</a>
+            <a onClick={this.props.examine.bind(this,val.id,1)}>通过</a>
             <Divider type="vertical"/>
-            <a href="">驳回</a>
+            <a onClick={this.props.examine.bind(this,val.id,2)}>驳回</a>
           </div>
         ),
       },

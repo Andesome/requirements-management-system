@@ -10,28 +10,55 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
-//需求管理页面
+//方案管理页面
 @connect(state => ({
   rule: state.rule,
-  demands:state.demand
+  solutions:state.solution
 }))
 @Form.create()
 class SolutionManager extends PureComponent {
-  state = {
-    addInputValue: '',
-    modalVisible: false,
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-  };
+  constructor(props) {
+    super(props);
+    this.examineSolution = this.examineSolution.bind(this);
+    this.paginationFunc = this.paginationFunc.bind(this);
+    this.state = {
+      addInputValue: '',
+      modalVisible: false,
+      expandForm: false,
+      selectedRows: [],
+      formValues: {},
+    };
+  }
+
+
+
+  //审核需求：1,审核通过，2，审核不通
+  examineSolution(solutionId,status){  //传入需求ID,以及要改变的状态
+    console.log("审核方案",solutionId,status);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'solution/setSolutionStatus',
+      solutionId:solutionId,
+      status:status
+    })
+  }
+
+  //分页函数
+  paginationFunc(offset,limit){
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'solution/fetch',
+      offset:offset,
+      limit:limit
+    });
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'demand/fetch',
-    });
-    dispatch({
-      type: 'rule/fetch',
+      type: 'solution/fetch',
+      offset: 0,
+      limit: 10
     });
   }
 
@@ -278,8 +305,8 @@ class SolutionManager extends PureComponent {
   }
 
   render() {
-    console.log("需求管理页面props：",this.props);
-    const { demands: { loading: ruleLoading, list:data } } = this.props;
+    console.log("方案管理页面props：",this.props);
+    const { solutions: { loading: ruleLoading, list:data,total } } = this.props;
     const { selectedRows, modalVisible, addInputValue } = this.state;
     // console.log("rule:--",ruleLoading,data);
     const menu = (
@@ -319,6 +346,10 @@ class SolutionManager extends PureComponent {
               data={data}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
+              totalSize={total}
+              dispatch={this.props.dispatch}
+              examine={this.examineSolution}
+              pagingFun={this.paginationFunc}
             />
           </div>
         </Card>

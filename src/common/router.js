@@ -133,8 +133,14 @@ export const getRouterData = (app) => {
     '/reqs_manager': {
       component: dynamicWrapper(app, ['demand','rule'], () => import('../routes/ReqManager/ReqManager')),
     },
+    '/req/detail': {
+      component: dynamicWrapper(app, ['demand','profile'], () => import('../routes/ReqDetail/ReqDetail')),
+    },
     '/solutions_manager': {
-      component: dynamicWrapper(app, ['rule'], () => import('../routes/SolutionManager/SolutionManager')),
+      component: dynamicWrapper(app, ['solution','rule'], () => import('../routes/SolutionManager/SolutionManager')),
+    },
+    '/solution/detail': {
+      component: dynamicWrapper(app, ['solution'], () => import('../routes/SolutionDetail/SolutionDetail')),
     },
     '/consultant/detail': {
       component: dynamicWrapper(app, [], () => import('../routes/consultant/Detail')),

@@ -1,11 +1,14 @@
-import {queryAllDemands,checkDemand,deleteDemand} from '../services/demand';
+import {queryAllSolutions,checkSolution,deleteSolution} from "../services/solution";
 
 export default {
-  namespace: 'demand',
+  namespace: 'solution',
 
   state: {
     list: [],
     loading: false,
+    offset:0,
+    limit:10,
+    total:0
   },
 
   effects: {
@@ -14,7 +17,7 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(queryAllDemands,offset,limit);
+      const response = yield call(queryAllSolutions,offset,limit);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'saveAll',
@@ -25,16 +28,16 @@ export default {
         payload: false,
       });
     },
-    *setDemandStatus({reqId,status},{call,put}){
+    *setSolutionStatus({solutionId,status},{call,put}){
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(checkDemand,reqId,status);
+      const response = yield call(checkSolution,solutionId,status);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'changeStatus',
-        reqId:reqId,
+        solutionId:solutionId,
         status:status
       });
       yield put({
@@ -42,16 +45,16 @@ export default {
         payload: false,
       });
     },
-    *removeDemand({reqId}, {call, put}){
+    *removeSolution({solutionId}, {call, put}){
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(deleteDemand,reqId);
+      const response = yield call(deleteSolution,solutionId);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'remove',
-        reqId:reqId
+        solutionId:solutionId
       });
       yield put({
         type: 'changeLoading',
@@ -74,7 +77,7 @@ export default {
       return {
         ...state,
         list: state.list.map(val => {
-          if(val.id===(action.reqId>>0)){
+          if(val.id===(action.solutionId>>0)){
             val.status = action.status;
             return val;
           }else{
@@ -87,7 +90,7 @@ export default {
       return{
         ...state,
         list:state.list.map((val)=>(
-          val.id !== action.reqId>>0
+          val.id !== action.solutionId>>0
         ))
       }
     },
