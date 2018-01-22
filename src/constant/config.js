@@ -37,4 +37,7 @@ export const VERIFY_PAGE = myHost+'/#/test';
 //文件服务器URL
 export const FILE_SERVER = '//imgcdn.robo2025.com/';
 
+//分页：每页显示多少记录
+export const PAGE_SIZE = 10;
+
 

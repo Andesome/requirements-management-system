@@ -56,8 +56,8 @@ axios.interceptors.response.use(function (response) {
    *   20004	登录超时
    * */
   if ((response.data.rescode >> 0) > 20000) {
-    // login();
-    alert("登录过期");
+    login();
+    // alert("登录过期");
 
   }
 

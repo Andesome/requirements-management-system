@@ -10,16 +10,17 @@ export default {
   },
 
   effects: {
-    * fetch(_, {call, put}) {
+    * fetch({offset,limit}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(queryAllDemands);
-      console.log('所有需求列表：', response.data);
+      console.log("分页限制:",offset,limit);
+      const response = yield call(queryAllDemands,offset,limit);
+      console.log('获取需求响应：：', response);
       yield put({
         type: 'saveAll',
-        payload: response.data,
+        payload: response,
       });
       yield put({
         type: 'changeLoading',
@@ -32,7 +33,10 @@ export default {
     saveAll(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: action.payload.data,
+        total:action.payload.headers["x-content-total"]>>0,
+        offset:action.offset>>0,
+        limit:action.limit>>0
       };
     },
     changeLoading(state, action) {

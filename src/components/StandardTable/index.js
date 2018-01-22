@@ -2,14 +2,21 @@ import React, {PureComponent} from 'react';
 import moment from 'moment';
 import {Table, Alert, Badge, Divider} from 'antd';
 import styles from './index.less';
+import { PAGE_SIZE } from "../../constant/config";
 
 const statusMap = ['default', 'processing', 'success', 'error'];
 
 class StandardTable extends PureComponent {
-  state = {
-    selectedRowKeys: [],
-    totalCallNo: 0,
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedRowKeys: [],
+      totalCallNo: 0,
+      filteredInfo: null,
+      sortedInfo: null,
+    };
+  }
+
 
   componentWillReceiveProps(nextProps) {
     // clean state
@@ -34,8 +41,18 @@ class StandardTable extends PureComponent {
   }
 
   handleTableChange = (pagination, filters, sorter) => {
-    console.log("处理tab变化：",pagination,filters,sorter)
-    this.props.onChange(pagination, filters, sorter);
+    // console.log("处理tab变化：",pagination,filters,sorter,PAGE_SIZE);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'demand/fetch',
+      offset:pagination.current*PAGE_SIZE,
+      limit:PAGE_SIZE
+    });
+    this.setState({
+      filteredInfo: filters,
+      sortedInfo: sorter,
+    });
+    // this.props.onChange(pagination, filters, sorter);
   }
 
   cleanSelectedKeys = () => {
@@ -43,9 +60,12 @@ class StandardTable extends PureComponent {
   }
 
   render() {
-    const {selectedRowKeys, totalCallNo} = this.state;
+    let {selectedRowKeys, totalCallNo , sortedInfo, filteredInfo } = this.state;
+    sortedInfo = sortedInfo || {};
+    filteredInfo = filteredInfo || {};
     // const { data: { list, pagination }, loading } = this.props;
     let list = this.props.data;
+    let totalSize = this.props.totalSize;//需求总条数
     list.forEach((val) => {
       val.desc = val.desc ? val.desc.substr(0, 10) : '';
     });
@@ -72,6 +92,7 @@ class StandardTable extends PureComponent {
       {
         title: '类型',
         dataIndex: 'req_type',
+        key:'req_type',
         filters: [
           {
             text: types["si"],
@@ -90,6 +111,9 @@ class StandardTable extends PureComponent {
             value: "other",
           },
         ],
+        filteredValue: filteredInfo.req_type || null,
+        onFilter: (value, record) => (record.req_type.includes(value)),
+        sortOrder: sortedInfo.columnKey === 'req_type' && sortedInfo.order,
         render(val) {
           return <span> {types[val]} </span>;
         },
@@ -97,6 +121,7 @@ class StandardTable extends PureComponent {
       {
         title: '状态',
         dataIndex: 'status',
+        key:'status',
         filters: [
           {
             text: status[0],
@@ -107,6 +132,9 @@ class StandardTable extends PureComponent {
             value: 1,
           }
         ],
+        filteredValue: filteredInfo.status || null,
+        onFilter: (value, record) => (record.status === value>>0),
+        sortOrder: sortedInfo.columnKey === 'status' && sortedInfo.order,
         render(val) {
           return <Badge status={statusMap[val]} text={status[val]}/>;
         },
@@ -114,7 +142,9 @@ class StandardTable extends PureComponent {
       {
         title: '报价',
         'dataIndex': "budget",
-        sorter: true,
+        key: 'budget',
+        sorter: (a, b) => a.budget - b.budget,
+        sortOrder: sortedInfo.columnKey === 'budget' && sortedInfo.order,
       },
       {
         title: '查看方案',
@@ -123,7 +153,9 @@ class StandardTable extends PureComponent {
       {
         title: '发布时间',
         dataIndex: 'created_time',
-        sorter:true,
+        key: 'created_time',
+        sorter: (a, b) => a.created_time - b.created_time,
+        sortOrder: sortedInfo.columnKey === 'created_time' && sortedInfo.order,
         render: val => <span>{moment(val*1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
@@ -141,8 +173,9 @@ class StandardTable extends PureComponent {
      const paginationProps = {
        showSizeChanger: true,
        showQuickJumper: true,
-       // ...pagination,
-     };
+       defaultCurrent: 1,
+       total: totalSize,
+     }
 
     const rowSelection = {
       selectedRowKeys,

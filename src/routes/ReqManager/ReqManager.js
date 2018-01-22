@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
 import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import {PAGE_SIZE} from "../../constant/config";
 
 import styles from './req-manager.less';
 
@@ -29,14 +30,17 @@ class ReqManager extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'demand/fetch',
+      offset: 0,
+      limit: 10
     });
     /*dispatch({
       type: 'rule/fetch',
     });*/
   }
 
+
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    console.log("父组件",pagination,filtersArg,sorter);
+    // console.log("父组件",pagination,filtersArg,sorter);
     const { dispatch } = this.props;
     const { formValues } = this.state;
 
@@ -279,7 +283,7 @@ class ReqManager extends PureComponent {
 
   render() {
     // console.log("需求管理页面props：",this.props);
-    const { demands: { loading: ruleLoading, list:data } } = this.props;
+    const { demands: { loading: ruleLoading, list:data,total } } = this.props;
     const { selectedRows, modalVisible, addInputValue } = this.state;
   // console.log("rule:--",ruleLoading,data);
     const menu = (
@@ -319,6 +323,8 @@ class ReqManager extends PureComponent {
               data={data}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
+              totalSize={total}
+              dispatch={this.props.dispatch}
             />
           </div>
         </Card>

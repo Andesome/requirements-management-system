@@ -60,10 +60,11 @@ export default function request(url, options) {
     .then(checkStatus)
     .then((response) => {
       console.log("axios:",response);
-      const {status,statusText} = response;
+      const {status,statusText,headers} = response;
       return Promise.resolve({
         status,
         statusText,
+        headers,
         ...response.data
       })
     });

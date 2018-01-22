@@ -86,7 +86,7 @@ class BasicLayout extends React.PureComponent {
     this.props.dispatch({
       type: 'user/fetch',
     });
-    console.log("基础也渲染好了")
+    // console.log("基础也渲染好了")
   }
   getPageTitle() {
     const { routerData, location } = this.props;
@@ -129,7 +129,7 @@ class BasicLayout extends React.PureComponent {
       collapsed, fetchingNotices, notices, routerData, match, location,
     } = this.props;
     const currentUser = JSON.parse(window.sessionStorage.getItem('userinfo'));
-    console.log('baseLayout', this.props);
+    // console.log('baseLayout', this.props);
     const layout = (
       <Layout>
         <SiderMenu
