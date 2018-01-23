@@ -132,3 +132,52 @@ export function getRoutes(path, routerData) {
   });
   return renderRoutes;
 }
+
+
+//将服务器代码转换成需求类型
+export function getReqType(code) {
+  switch (code) {
+    case 'si':
+      return '系统集成';
+    case 'purchase':
+      return '产品购买';
+    case 'tech':
+      return '技术支持';
+    case 'other':
+      return '其它';
+    default:
+      return '其它类型'
+  }
+}
+
+//将服务器代码转换成需求周期
+export function getExceptCycle(code) {
+  switch (code) {
+    case 1:
+      return '7天内';
+    case 2:
+      return '1~3月';
+    case 3:
+      return '3~6月';
+    case 4:
+      return '6~12月';
+    case 5:
+      return '一年以上';
+    default:
+      return '不限时间'
+  }
+}
+
+//将服务器代码转换成需求状态
+export function getReqStatus(code) {
+  switch (code) {
+    case 0:
+      return '未审核';
+    case 1:
+      return '已审核';
+    case 2:
+      return '审核未通过';
+    default:
+      return '审核中'
+  }
+}

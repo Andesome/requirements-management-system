@@ -1,7 +1,8 @@
 import React from "react";
 import { List, Avatar } from 'antd';
 import {withRouter} from "dva/router";
-
+import styles from "./solution-list.less"
+/*
 const data = [
   {
     title: '方案一',
@@ -20,6 +21,7 @@ const data = [
     desc:'方案一描述方案一描述方案一描述方案一描述方案一描述方案一描述方案一描述方案一描述方案一描述方案一描述方案一描述'
   },
 ];
+*/
 
 @withRouter
 class SolutionList extends React.Component{
@@ -32,15 +34,16 @@ class SolutionList extends React.Component{
   jumpToDetail(reqId,solutionId,e){
     e.preventDefault();
     console.log("跳转",reqId,solutionId,this.props);
-    this.props.history.push(`/provide?viewOnly=on&req_id=${reqId}&solution_id=${solutionId}`);
+    this.props.history.push(`/solution/detail?solution_id=${solutionId}`);
   }
 
   render(){
     // console.log("需求列表接收数据：",this.props);
-    // let data = this.props.data;
+    let data = this.props.data;
     return(
       <List
         itemLayout="horizontal"
+        className={styles["solution-list"]}
         locale={{ emptyText: '还没有方案商提供解决方案' }}
         dataSource={data}
         renderItem={item => (

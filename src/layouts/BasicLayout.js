@@ -14,6 +14,7 @@ import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
+import {logout} from "../services/user"
 
 /**
  * 根据菜单取得重定向地址.
@@ -111,11 +112,9 @@ class BasicLayout extends React.PureComponent {
     });
   }
   handleMenuClick = ({ key }) => {
-    if (key === 'logout') {
-      this.props.dispatch({
-        type: 'login/logout',
-      });
-    }
+    console.log("退出登录");
+    //退出登录
+    logout();
   }
   handleNoticeVisibleChange = (visible) => {
     if (visible) {

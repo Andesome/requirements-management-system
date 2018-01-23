@@ -84,35 +84,6 @@ class StandardTable extends PureComponent {
         dataIndex: 'desc',
       },
       {
-        title: '类型',
-        dataIndex: 'req_type',
-        key:'req_type',
-        filters: [
-          {
-            text: types["si"],
-            value: "si",
-          },
-          {
-            text: types["purchase"],
-            value: "purchase",
-          },
-          {
-            text: types["tech"],
-            value: "tech",
-          },
-          {
-            text: types["other"],
-            value: "other",
-          },
-        ],
-        filteredValue: filteredInfo.req_type || null,
-        onFilter: (value, record) => (record.req_type.includes(value)),
-        sortOrder: sortedInfo.columnKey === 'req_type' && sortedInfo.order,
-        render(val) {
-          return <span> {types[val]} </span>;
-        },
-      },
-      {
         title: '状态',
         dataIndex: 'status',
         key:'status',
@@ -136,13 +107,6 @@ class StandardTable extends PureComponent {
         render(val) {
           return <Badge status={statusMap[val]} text={status[val]}/>;
         },
-      },
-      {
-        title: '报价',
-        'dataIndex': "budget",
-        key: 'budget',
-        sorter: (a, b) => a.budget - b.budget,
-        sortOrder: sortedInfo.columnKey === 'budget' && sortedInfo.order,
       },
       {
         title: '查看',

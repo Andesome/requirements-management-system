@@ -1,4 +1,4 @@
-import {queryAllDemands,checkDemand,deleteDemand} from '../services/demand';
+import {queryAllDemands,checkDemand,deleteDemand,getDemandDetail} from '../services/demand';
 
 export default {
   namespace: 'demand',
@@ -6,6 +6,8 @@ export default {
   state: {
     list: [],
     loading: false,
+    detail:{},
+    data:{}
   },
 
   effects: {
@@ -19,6 +21,22 @@ export default {
       yield put({
         type: 'saveAll',
         payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
+    * fetchDemandDetail({reqId},{call,put}){
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(getDemandDetail,reqId);
+      // console.log('获取需求详情响应：', response);
+      yield put({
+        type: 'saveDetail',
+        payload: response.data,
       });
       yield put({
         type: 'changeLoading',
@@ -69,6 +87,12 @@ export default {
         offset:action.offset>>0,
         limit:action.limit>>0
       };
+    },
+    saveDetail(state,action){
+      return {
+        ...state,
+        detail:action.payload
+      }
     },
     changeStatus(state,action) {
       return {

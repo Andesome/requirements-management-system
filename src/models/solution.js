@@ -1,4 +1,4 @@
-import {queryAllSolutions,checkSolution,deleteSolution} from "../services/solution";
+import {queryAllSolutions,checkSolution,deleteSolution,getSolutionDetail} from "../services/solution";
 
 export default {
   namespace: 'solution',
@@ -8,7 +8,8 @@ export default {
     loading: false,
     offset:0,
     limit:10,
-    total:0
+    total:0,
+    detail:{}
   },
 
   effects: {
@@ -28,13 +29,29 @@ export default {
         payload: false,
       });
     },
+    * fetchSolutionDetail({solutionId},{call,put}){
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(getSolutionDetail,solutionId);
+      // console.log('获取方案详情响应：', response);
+      yield put({
+        type: 'saveDetail',
+        payload: response.data,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
     *setSolutionStatus({solutionId,status},{call,put}){
       yield put({
         type: 'changeLoading',
         payload: true,
       });
       const response = yield call(checkSolution,solutionId,status);
-      // console.log('获取需求响应：：', response);
+      console.log('修改方案状态响应：', response);
       yield put({
         type: 'changeStatus',
         solutionId:solutionId,
@@ -73,10 +90,17 @@ export default {
         limit:action.limit>>0
       };
     },
+    saveDetail(state,action){
+      return {
+        ...state,
+        detail:action.payload
+      }
+    },
     changeStatus(state,action) {
       return {
         ...state,
         list: state.list.map(val => {
+          // console.log("遍历方案ID:",val.id,action.solutionId);
           if(val.id===(action.solutionId>>0)){
             val.status = action.status;
             return val;

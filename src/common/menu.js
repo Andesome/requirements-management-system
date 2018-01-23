@@ -1,8 +1,10 @@
 const menuData = [{
   name:'需求管理',
+  icon: 'profile',
   path:'reqs_manager',
 },{
   name:'方案管理',
+  icon: 'appstore-o',
   path:'solutions_manager',
 },{
   name: '使用文档',

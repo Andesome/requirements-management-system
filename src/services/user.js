@@ -1,5 +1,5 @@
 import lyRequest from '../utils/lyRequest';
-import {LOGIN_URL, LOGOUT_URL, REGISTER_URL,VERIFY_PAGE} from "../constant/config";
+import {LOGIN_URL, LOGOUT_URL, REGISTER_URL,VERIFY_PAGE,HOME_PAGE} from "../constant/config";
 import {URL} from "../constant/config";
 import Cookies from "js-cookie";
 

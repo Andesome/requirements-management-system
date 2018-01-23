@@ -23,8 +23,8 @@ export const REGISTER_URL = URL + '/register';
 export const LOGOUT_URL = URL + '/logout';
 
 // let myHost = "http://frp2.wpcenter.cn:8018";
-let myHost = "http://192.168.6.112:8000";
-// let myHost = 'http://66.112.216.3:8000';
+// let myHost = "http://192.168.4.10:8000";
+let myHost = 'http://66.112.216.3/sd-sys-admin';
 //前端登录验证URL
 export const NEXT_URL = myHost+'/#/test';
 
@@ -39,5 +39,3 @@ export const FILE_SERVER = '//imgcdn.robo2025.com/';
 
 //分页：每页显示多少记录
 export const PAGE_SIZE = 10;
-
-

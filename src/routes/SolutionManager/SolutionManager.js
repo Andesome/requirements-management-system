@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
-import StandardTable from '../../components/StandardTable';
+import StandardTable from '../../components/StandardTable/SolutionTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './solution-manager.less';
@@ -21,6 +21,7 @@ class SolutionManager extends PureComponent {
     super(props);
     this.examineSolution = this.examineSolution.bind(this);
     this.paginationFunc = this.paginationFunc.bind(this);
+    this.jumpToDetail = this.jumpToDetail.bind(this);
     this.state = {
       addInputValue: '',
       modalVisible: false,
@@ -32,7 +33,7 @@ class SolutionManager extends PureComponent {
 
 
 
-  //审核需求：1,审核通过，2，审核不通
+  //审核方案：1,审核通过，2，审核不通
   examineSolution(solutionId,status){  //传入需求ID,以及要改变的状态
     console.log("审核方案",solutionId,status);
     const { dispatch } = this.props;
@@ -51,6 +52,11 @@ class SolutionManager extends PureComponent {
       offset:offset,
       limit:limit
     });
+  }
+
+  //跳转到方案详情页
+  jumpToDetail(solutionId){
+    this.props.history.push("/solution/detail?solution_id="+solutionId);
   }
 
   componentDidMount() {
@@ -317,16 +323,13 @@ class SolutionManager extends PureComponent {
     );
 
     return (
-      <PageHeaderLayout title="查询表格">
+      <PageHeaderLayout title="方案列表">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>
               {this.renderForm()}
             </div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
               {
                 selectedRows.length > 0 && (
                   <span>
@@ -350,23 +353,10 @@ class SolutionManager extends PureComponent {
               dispatch={this.props.dispatch}
               examine={this.examineSolution}
               pagingFun={this.paginationFunc}
+              jumpFunc={this.jumpToDetail}
             />
           </div>
         </Card>
-        <Modal
-          title="新建规则"
-          visible={modalVisible}
-          onOk={this.handleAdd}
-          onCancel={() => this.handleModalVisible()}
-        >
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="描述"
-          >
-            <Input placeholder="请输入" onChange={this.handleAddInput} value={addInputValue} />
-          </FormItem>
-        </Modal>
       </PageHeaderLayout>
     );
   }

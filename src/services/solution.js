@@ -39,3 +39,14 @@ export async function deleteSolution(solutionId) {
   });
 }
 
+//获取方案详情
+export async function getSolutionDetail(solutionId) {
+  let acess_token = Cookies.get("access_token");
+  return lyRequest(`${URL1}/dashboard/solutions/${solutionId}`,{
+    method:"get",
+    headers:{
+      Authorization:acess_token
+    }
+  });
+}
+

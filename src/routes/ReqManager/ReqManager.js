@@ -1,10 +1,10 @@
 import React, {PureComponent} from "react";
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
-import StandardTable from '../../components/StandardTable';
+import StandardTable from '../../components/StandardTable/ReqTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-
 import styles from './req-manager.less';
+
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -21,6 +21,7 @@ class ReqManager extends PureComponent {
     super(props);
     this.examineDemand  = this.examineDemand.bind(this);
     this.paginationFunc = this.paginationFunc.bind(this);
+    this.jumpToDetail = this.jumpToDetail.bind(this);
     this.state = {
       addInputValue: '',
       modalVisible: false,
@@ -52,6 +53,11 @@ class ReqManager extends PureComponent {
     });
   }
 
+  //跳转到需求详情页
+  jumpToDetail(reqId){
+    this.props.history.push("/req/detail?req_id="+reqId);
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -59,9 +65,6 @@ class ReqManager extends PureComponent {
       offset: 0,
       limit: 10
     });
-    /*dispatch({
-      type: 'rule/fetch',
-    });*/
   }
 
 
@@ -308,7 +311,7 @@ class ReqManager extends PureComponent {
   }
 
   render() {
-    console.log("需求管理页面props：",this.props);
+    // console.log("需求管理页面props：",this.props);
     const { demands: { loading: ruleLoading, list:data,total } } = this.props;
     const { selectedRows, modalVisible, addInputValue } = this.state;
   // console.log("rule:--",ruleLoading,data);
@@ -320,16 +323,13 @@ class ReqManager extends PureComponent {
     );
 
     return (
-      <PageHeaderLayout title="查询表格">
+      <PageHeaderLayout title="需求列表">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>
               {this.renderForm()}
             </div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
               {
                 selectedRows.length > 0 && (
                   <span>
@@ -353,23 +353,10 @@ class ReqManager extends PureComponent {
               dispatch={this.props.dispatch}
               examine={this.examineDemand}
               pagingFun={this.paginationFunc}
+              jumpFunc={this.jumpToDetail}
             />
           </div>
         </Card>
-        <Modal
-          title="新建规则"
-          visible={modalVisible}
-          onOk={this.handleAdd}
-          onCancel={() => this.handleModalVisible()}
-        >
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="描述"
-          >
-            <Input placeholder="请输入" onChange={this.handleAddInput} value={addInputValue} />
-          </FormItem>
-        </Modal>
       </PageHeaderLayout>
     );
   }

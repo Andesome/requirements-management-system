@@ -39,3 +39,15 @@ export async function deleteDemand(reqId) {
   });
 }
 
+//需求详情
+export async function getDemandDetail(reqId) {
+  let acess_token = Cookies.get("access_token");
+  return lyRequest(`${URL1}/dashboard/reqs/${reqId}`,{
+    method:"get",
+    headers:{
+      Authorization:acess_token
+    }
+  });
+}
+
+
