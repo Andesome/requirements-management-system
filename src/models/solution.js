@@ -51,9 +51,24 @@ export default {
         payload: true,
       });
       const response = yield call(checkSolution,solutionId,status);
-      console.log('修改方案状态响应：', response);
       yield put({
         type: 'changeStatus',
+        solutionId:solutionId,
+        status:status
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
+    *setDetailStatus({solutionId,status},{call,put}){
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(checkSolution,solutionId,status);
+      yield put({
+        type: 'changeStatus2',
         solutionId:solutionId,
         status:status
       });
@@ -108,6 +123,15 @@ export default {
             return val;
           }
         })
+      }
+    },
+    changeStatus2(state,action) {
+      return {
+        ...state,
+        detail:{
+          ...state.detail,
+          solution:{...state.detail.solution,status:action.status}
+        }
       }
     },
     remove(state,action){

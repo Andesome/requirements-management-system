@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
 import {connect} from 'dva';
-import {Button, Menu, Dropdown, Icon, Row, Col, Steps, Card, Popover, Badge, List,Modal,Spin} from 'antd';
-import classNames from 'classnames';
+import {Button, Row, Col, Steps, Card, Popover, Badge, List,Modal,Spin} from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import DescriptionList from '../../components/DescriptionList';
-import SolutionList from "../../components/SolutionList/SolutionList";
 import {queryString,timeStampToDate} from "../../utils/tools";
 import {getReqType,getReqStatus,getExceptCycle} from "../../utils/utils";
 import styles from './solution-detail.less';
@@ -89,10 +87,9 @@ export default class SolutionDetail extends Component {
 
   //审核方案：1,审核通过，2，审核不通
   examineSolution(solutionId,status){  //传入需求ID,以及要改变的状态
-    console.log("审核方案",solutionId,status);
     const { dispatch } = this.props;
     dispatch({
-      type: 'solution/setSolutionStatus',
+      type: 'solution/setDetailStatus',
       solutionId:solutionId,
       status:status
     })
@@ -163,7 +160,7 @@ export default class SolutionDetail extends Component {
         <Description term="需求类型">{getReqType(reqInfo.req_type)}</Description>
         <Description term="需求周期">{getExceptCycle(reqInfo.except_cycle)}</Description>
         <Description term="创建时间">{timeStampToDate(reqInfo.created_time*1000).timeStr}</Description>
-        <Description term="操作人"><a href="">不可追溯</a></Description>
+        <Description term="操作人">不可追溯</Description>
       </DescriptionList>
     );
 
@@ -201,7 +198,7 @@ export default class SolutionDetail extends Component {
       </div>
     )
 
-    console.log("方案详情页props",this.props,solutionInfo);
+    // console.log("方案详情页props",this.props,solutionInfo);
 
     return (
       <PageHeaderLayout

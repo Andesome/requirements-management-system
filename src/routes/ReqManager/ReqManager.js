@@ -34,7 +34,7 @@ class ReqManager extends PureComponent {
 
   //审核需求：1,审核通过，2，审核不通
   examineDemand(reqId,status){  //传入需求ID,以及要改变的状态
-    console.log("审核需求",reqId,status);
+    console.log("审核需求：",reqId,status);
     const { dispatch } = this.props;
     dispatch({
       type: 'demand/setDemandStatus',

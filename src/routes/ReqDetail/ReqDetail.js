@@ -50,10 +50,10 @@ export default class ReqDetail extends Component {
 
   //审核需求：1,审核通过，2，审核不通过
   examineDemand(reqId,status){  //传入需求ID,以及要改变的状态
-    console.log("审核需求",reqId,status);
+    console.log("详情页审核需求：",reqId,status);
     const { dispatch } = this.props;
     dispatch({
-      type: 'demand/setDemandStatus',
+      type: 'demand/setDetailStatus',
       reqId:reqId,
       status:status
     })
@@ -114,7 +114,7 @@ export default class ReqDetail extends Component {
     const {stepDirection} = this.state;
     const { demand} = this.props;
     const {detail:{req:reqInfo,solutions:solutionsList},loading: reqDetailLoading} = demand;
-    console.log("detail---",this.props);
+    // console.log("detail页面props:",this.props);
     if(!reqInfo){
       return <Spin spinning={true} />;
     }
@@ -126,7 +126,7 @@ export default class ReqDetail extends Component {
         <Description term="需求类型">{getReqType(reqInfo.req_type)}</Description>
         <Description term="需求周期">{getExceptCycle(reqInfo.except_cycle)}</Description>
         <Description term="创建时间">{timeStampToDate(reqInfo.created_time*1000).timeStr}</Description>
-        <Description term="操作人"><a href="">不可追溯</a></Description>
+        <Description term="操作人">不可追溯</Description>
       </DescriptionList>
     );
 

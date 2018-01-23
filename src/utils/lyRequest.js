@@ -20,7 +20,6 @@ const codeMessage = {
   504: '网关超时',
 };
 function checkStatus(response) {
-  console.log("checkStatus",response);
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -59,7 +58,6 @@ export default function request(url, options) {
   return axios(url, newOptions)
     .then(checkStatus)
     .then((response) => {
-      console.log("axios:",response);
       const {status,statusText,headers} = response;
       return Promise.resolve({
         status,

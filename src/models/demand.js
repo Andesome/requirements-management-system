@@ -7,7 +7,9 @@ export default {
     list: [],
     loading: false,
     detail:{},
-    data:{}
+    offset:0,
+    total:0,
+    limit:10
   },
 
   effects: {
@@ -60,6 +62,23 @@ export default {
         payload: false,
       });
     },
+    *setDetailStatus({reqId,status},{call,put}){
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(checkDemand,reqId,status);
+      // console.log('获取需求响应：：', response);
+      yield put({
+        type: 'changeStatus2',
+        reqId:reqId,
+        status:status
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
     *removeDemand({reqId}, {call, put}){
       yield put({
         type: 'changeLoading',
@@ -104,7 +123,16 @@ export default {
           }else{
             return val;
           }
-        })
+        }),
+      }
+    },
+    changeStatus2(state,action) {
+      return {
+        ...state,
+        detail:{
+          ...state.detail,
+          req:{...state.detail.req,status:action.status}
+        }
       }
     },
     remove(state,action){

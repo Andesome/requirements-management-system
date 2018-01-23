@@ -122,19 +122,26 @@ class StandardTable extends PureComponent {
       },
       {
         title: '审核',
-        render: (val,record) => (
-          <div>
-            <a onClick={this.props.examine.bind(this,val.id,1)}>通过</a>
-            <Divider type="vertical"/>
-            <a onClick={this.props.examine.bind(this,val.id,2)}>驳回</a>
-          </div>
+        render: (val) => (
+          val.status !== 0?
+            <div>
+              <a onClick={this.props.examine.bind(this,val.id,1)} disabled>通过</a>
+              <Divider type="vertical"/>
+              <a onClick={this.props.examine.bind(this,val.id,2)} disabled>驳回</a>
+            </div>
+            :
+            <div>
+              <a onClick={this.props.examine.bind(this,val.id,1)}>通过</a>
+              <Divider type="vertical"/>
+              <a onClick={this.props.examine.bind(this,val.id,2)}>驳回</a>
+            </div>
         ),
       },
     ];
 
      const paginationProps = {
-       showSizeChanger: true,
-       showQuickJumper: true,
+       showSizeChanger: false,
+       showQuickJumper: false,
        defaultCurrent: 1,
        total: totalSize,
      }

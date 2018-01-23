@@ -5,11 +5,11 @@ import FastClick from 'fastclick';
 import './g2';
 import './rollbar';
 import onError from './error';
-// import browserHistory from 'history/createBrowserHistory';
+import { hashHistory } from 'dva/router';
 import './index.less';
 // 1. Initialize
 const app = dva({
-  // history: browserHistory(),
+  history: hashHistory,
   onError,
 });
 
