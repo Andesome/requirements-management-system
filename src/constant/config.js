@@ -23,13 +23,13 @@ export const REGISTER_URL = URL + '/register';
 export const LOGOUT_URL = URL + '/logout';
 
 // let myHost = "http://frp2.wpcenter.cn:8018";
-// let myHost = "http://localhost:8000";
-let myHost = 'http://66.112.216.3/sd-sys-admin';
+let myHost = "http://localhost:8000";
+// let myHost = 'http://www.liaolunling.top/sd-sys-admin';
 //前端登录验证URL
 export const NEXT_URL = myHost+'/#/test';
 
 //前端首页URL
-export const HOME_PAGE = myHost+'/#/';
+export const HOME_PAGE = myHost+'/#/reqs_manager';
 
 //前端验证URL
 export const VERIFY_PAGE = myHost+'/#/test';

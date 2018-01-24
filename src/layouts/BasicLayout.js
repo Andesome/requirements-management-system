@@ -168,7 +168,7 @@ class BasicLayout extends React.PureComponent {
                     />
                   ))
                 }
-                <Redirect exact from="/" to="/reqs_manager" />
+                <Redirect exact from="/" to="/test" />
                 <Route render={NotFound} />
               </Switch>
             </div>

@@ -1,6 +1,5 @@
 {
   "entry": ["src/index.js"],
-  "publicPath":"/sd-sys-admin/",
   "extraBabelPlugins": [
     "transform-runtime",
     "transform-decorators-legacy",
